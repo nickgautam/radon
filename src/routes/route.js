@@ -1,6 +1,6 @@
 const express = require('express');
 const logger = require('../logger/logger')
-const helper = require('../utill/helper')
+const helper = require('../util/helper')
 const formatter = require('../validator/formatter')
 const router = express.Router();
 
