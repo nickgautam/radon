@@ -33,6 +33,6 @@ const bookSchema  = new mongoose.Schema( {
     year: Number,
 }, { timestamps: true });
 
-module.exports = mongoose.model('User', bookSchema) //books
+module.exports = mongoose.model('Book', bookSchema) //books
 // String, Number
 // Boolean, Object/json, array
