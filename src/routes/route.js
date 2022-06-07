@@ -23,5 +23,6 @@ router.get("/getXINRBooks", BookController.getXINRBooks)
 
 router.get("/getParticularBooks", BookController.getParticularBooks)
 
+router.get("/getBooksInYear", BookController.getBooksInYear)
 
 module.exports = router;

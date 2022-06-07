@@ -1,19 +1,20 @@
 const { count } = require("console")
 const BookModel= require("../models/bookModel")
 
+//1. We have to create a book collection 
 const createBook= async function (req, res) {
     let data= req.body
 
     let savedData= await BookModel.create(data)
     res.send({msg: savedData})
 }
-
+//2. We have get a booklist from the database in which only bookname and authorname will exist.
 const bookList= async function (req, res) {
-    let allBooks=await BookModel.find( ).select( { bookName: 1, authorName: 1, _id: 0})
+    let allBooks=await BookModel.find( ).select( { bookName: 1, authorName: 1, _id: 0}).count()
     res.send({msg: allBooks})
     }
 
-//returns books that are available in stock or have more than 500 pages
+//6. We have to return books that are available in stock or have more than 500 pages
     const getRandomBooks= async function ( req, res) {
         let booksAvailable= await BookModel.find({
             $or: [ {stockAvailable : "True" } , {  totalPages: { $gt: 500 } }]
@@ -21,33 +22,32 @@ const bookList= async function (req, res) {
         res.send({msg: booksAvailable})
     }
 
+ //5. We have to find those books from database that have price 100INR or 200INR or 500INR.
     const getXINRBooks= async function ( req, res) {
-       
-        let books= await BookModel.find({
-            $or: [ {indianPrice : "INR 100"} , {  indianPrice: "INR 200" } , {  indianPrice: "INR 500"  }]
-        })
+        let books= await BookModel.find({"prices.indianPrice": {$in: ["100INR","200INR","500INR"]}} )
         res.send({msg: books})
     }
 
+ //4. We have to send the reponse after satisfying the any random condition that exist in the body section.
     const getParticularBooks= async function (req, res){
-        let a= req.body.year
-        if( a!= undefined){
-            let particularBook= await BookModel.find({"year": 2020})
+        let bookResult= req.body
+         let particularBook= await BookModel.find({bookResult})
             res.send({msg: particularBook})
         }
-         
         
-          
-       
+//3. We have to return all those bookName which published in a inputed year.
+     const getBooksInYear= async function (req, res){
+     let particularBook= await BookModel.find({year: req.body.year}).select({bookName:1 , _id:0})
+                res.send({msg: particularBook})
+            }
 
-        
-    }
+    
     module.exports.createBook= createBook
     module.exports.bookList= bookList
     module.exports.getRandomBooks= getRandomBooks
     module.exports.getXINRBooks= getXINRBooks
     module.exports.getParticularBooks= getParticularBooks
-
+    module.exports.getBooksInYear= getBooksInYear
 
 // const getBooksData= async function (req, res) {
 
