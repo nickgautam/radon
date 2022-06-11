@@ -3,7 +3,7 @@ const bookModel= require("../models/bookModel")
 const publisherModel= require("../models/publisherModel")
 const createBook= async function (req, res) {
     let book = req.body
-  
+    
    if(!req.body.author_id) {
     res.send({msg: "author_id is required"})
    }
@@ -17,8 +17,8 @@ const createBook= async function (req, res) {
    }
    let publisherData=await publisherModel.findById(req.body.publisher_id) 
     if(!publisherData) {
-    res.send({msg: "publisher is not present with this id"})
-   }
+    res.send({msg: "publisher is not present with this id"})  
+   }   
      else { let bookCreated = await bookModel.create(book)
         res.send({data: bookCreated})
     }
@@ -47,11 +47,11 @@ module.exports.updateisHardCover= updateisHardCover
 
 const updateBookprice = async function (req, res) {
   let getAuthorId= await authorModel.find({"rating":{$gt:3.5}}).select({_id:1})
-  let Book1 = await bookModel.updateMany({ author_id:getAuthorId[0] },{ $set: { price:+10} },{new: true})
-  let  Book2 = await bookModel.updateMany({ author_id:getAuthorId[1] },{ $set: { price:+10} },{new: true})
-  let  Book3 = await bookModel.updateMany({ author_id:getAuthorId[2] },{ $set: { price:+10} },{new: true})
+  let Book1 = await bookModel.updateMany({ author_id:getAuthorId[0] },{$inc:{price:10}} ,{new: true})
+  let  Book2 = await bookModel.updateMany({ author_id:getAuthorId[1] },{$inc:{price:10}},{new: true})
+  let  Book3 = await bookModel.updateMany({ author_id:getAuthorId[2] },{$inc:{price:10}},{new: true})
   let output = await bookModel.find({$in:[{Book1},{Book2},{Book3}]}).populate('author_id').select({name:1, author_id:1, price:1, _id:0})
   console.log(getAuthorId)  
-  res.send({data: output})
+  res.send({data: output})                
 }
 module.exports.updateBookprice= updateBookprice
