@@ -8,12 +8,12 @@ const createBook= async function (req, res) {
     res.send({msg: savedData})
 }
 
+module.exports.createBook = createBook
 
 
 
 
-
-const getBooksData = async function (req, res) {
+/*const getBooksData = async function (req, res) {
     let allBooks = await BookModel.find({ authorName: "HO" })
     console.log(allBooks)
     if (allBooks.length > 0) res.send({ msg: allBooks, condition: true })
@@ -36,7 +36,7 @@ const updateBooks = async function (req, res) {
     res.send({ msg: allBooks })
 }
 
-const deleteBooks = async function (req, res) {
+/*const deleteBooks = async function (req, res) {
     // let data = req.body 
     let allBooks = await BookModel.updateMany(
         { authorName: "FI" }, //condition
@@ -45,11 +45,11 @@ const deleteBooks = async function (req, res) {
     )
 
     res.send({ msg: allBooks })
-}
+}*/
 
 
 
-const totalSalesPerAuthor = async function (req, res) {
+/*const totalSalesPerAuthor = async function (req, res) {
     // let data = req.body 
     let allAuthorSales = await BookModel.aggregate(
         [
@@ -68,12 +68,12 @@ const totalSalesPerAuthor = async function (req, res) {
 // CREATE
 // READ
 // UPDATE
-// DELETE
+// DELETE*/
 
 
 
-module.exports.createBook = createBook
-module.exports.getBooksData = getBooksData
+
+/*module.exports.getBooksData = getBooksData
 module.exports.updateBooks = updateBooks
 module.exports.deleteBooks = deleteBooks
-module.exports.totalSalesPerAuthor = totalSalesPerAuthor
+module.exports.totalSalesPerAuthor = totalSalesPerAuthor*/
