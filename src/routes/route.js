@@ -6,13 +6,13 @@ router.get("/test-me", function (req, res) {
     res.send("My first ever api!")
 })
 
-router.post("/users", userController.createUser  )
+router.post("/users", userController.createUser  )    
 
 router.post("/login", userController.loginUser)
-
+   
 //The userId is sent by front end
-router.get("/users/:userId",  userController.getUserData)
+router.get("/users/:userId", middleware.authenticationMid1 , middleware.authorisationMid2,  userController.getUserData)
 
-router.put("/users/:userId", middleware.mid1, middleware.mid2, userController.updateUser)
-router.delete("/users/:userId", middleware.mid1,middleware.mid2, userController.deleteUser)
+router.put("/users/:userId", middleware.authenticationMid1 , middleware.authorisationMid2, userController.updateUser)
+router.delete("/users/:userId", middleware.authenticationMid1 ,middleware.authorisationMid2, userController.deleteUser)
 module.exports = router;

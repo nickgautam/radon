@@ -41,11 +41,11 @@ const loginUser = async function (req, res) {
 };
 
 const getUserData = async function (req, res) {
-  let token = req.headers["x-auth-token"];
-  if (!token) token = req.headers["x-auth-token"];
+  //let token = req.headers["x-auth-token"];
+  //if (!token) token = req.headers["x-auth-token"];
 
   //If no token is present in the request header return error
-  if (!token) return res.send({ status: false, msg: "token must be present" });
+  //if (!token) return res.send({ status: false, msg: "token must be present" });
 
   //console.log(token);  
   
@@ -54,11 +54,11 @@ const getUserData = async function (req, res) {
   // Input 1 is the token to be decoded
   // Input 2 is the same secret with which the token was generated
   // Check the value of the decoded token yourself        
-  let decodedToken = jwt.verify(token, "functionup-radon");
-  console.log(decodedToken)      
+  //let decodedToken = jwt.verify(token, "functionup-radon");
+  //console.log(decodedToken)      
  
-  if(!(decodedToken.userId==req.params.userId))                 
-    return res.send({ status: false, msg: "token is invalid" });
+  //if(!(decodedToken.userId==req.params.userId))                 
+    //return res.send({ status: false, msg: "token is invalid" });
 
 
   
