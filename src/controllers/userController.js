@@ -5,23 +5,30 @@ const createUser = async function (req, res) {
   //You can name the req, res objects anything.
   //but the first parameter is always the request 
   //the second parameter is always the response
-  let data = req.body;
+  try{
+
+    let data = req.body;
+    if(!data.mobile) return res.status(400).send({status: false, msg: "Mobile no is required"})
   let savedData = await userModel.create(data);
   //console.log(req.newAtribute);
-  res.send({ msg: savedData });
-};
+  
+  res.status(201).send({ status: true , msg: "user is successfully created." , data: savedData });
+}
+catch(err){res.status(500).send({msg: err.message})}}
+
 
 const loginUser = async function (req, res) {
   let userName = req.body.emailId;
   let password = req.body.password;
-
+try{
+  if(!(userName && password))return res.status(401).send({msg: "please login first"})
   let user = await userModel.findOne({ emailId: userName, password: password });
   if (!user)
-    return res.send({
+    return res.status(400).send({
       status: false,
       msg: "username or the password is not correct",
     });
-
+  
   // Once the login is successful, create the jwt token with sign function
   // Sign function has 2 inputs:
   // Input 1 is the payload or the object containing data to be set in token
@@ -38,9 +45,12 @@ const loginUser = async function (req, res) {
   );
   res.setHeader("x-auth-token", token);
   res.send({ status: true, token: token });
+}catch(err){
+  res.status(500).send({msg: err.message })
+}
 };
 
-const getUserData = async function (req, res) {
+
   //let token = req.headers["x-auth-token"];
   //if (!token) token = req.headers["x-auth-token"];
 
@@ -61,11 +71,9 @@ const getUserData = async function (req, res) {
     //return res.send({ status: false, msg: "token is invalid" });
 
 
-  
+    const getUserData = async function (req, res) {
   let userId = req.params.userId;
   let userDetails = await userModel.findById(userId);
-  if (!userDetails)
-    return res.send({ status: false, msg: "No such user exists" });
 
   res.send({ status: true, data: userDetails });
 };
@@ -77,27 +85,21 @@ const updateUser = async function (req, res) {
 // Return a different error message in both these cases
 
   let userId = req.params.userId;
-  let user = await userModel.findById(userId);
-  //Return an error if no user with the given id exists in the db
-  if (!user) {
-    return res.send("No such user exists");
-  }
-
   let userData = req.body;
+  try{
   let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
-  res.send({ status: updatedUser, data: updatedUser });
+  res.status(200).send({ status: true, data: updatedUser });
+}catch(err){res.status(500).send({msg:err.message})}
+
 };
 
 const deleteUser = async function (req, res) {
-
+try{
       let userId = req.params.userId;
       let user = await userModel.findById(userId);
-    
-      if (!user) {
-        return res.send("No such user exists");
-      }
       let markAttribute= await userModel.findOneAndUpdate({ _id: userId},{$set:{isDeleted:true}},{new: true , upsert:true});
-      res.send({ status: true, data: markAttribute });
+      res.status(200).send({ status: true, data: markAttribute });
+}catch(err){res.status(500).send({msg:err.message})}
     };
 
 
